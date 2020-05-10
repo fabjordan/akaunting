@@ -153,6 +153,11 @@ return [
     'clear_cache'           => 'Clear Cache',
     'go_to_dashboard'       => 'Go to dashboard',
 
+    'company_name'       => 'Razão Social',
+    'fantasy_name'       => 'Nome Fantasia',
+    'document'           => 'Documento',
+
+
     'card' => [
         'name'                  => 'Name on Card',
         'number'                => 'Card Number',

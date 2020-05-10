@@ -21,7 +21,13 @@
 
                 {{ Form::textGroup('email', trans('general.email'), 'envelope', []) }}
 
-                {{ Form::textGroup('tax_number', trans('general.tax_number'), 'percent', []) }}
+                {{ Form::textGroup('company_name', trans('general.company_name'), 'building') }}
+
+                {{ Form::textGroup('fantasy_name', trans('general.fantasy_name'), 'building', []) }}
+
+                {{ Form::textGroup('document', trans('general.document'), 'id-card') }}
+
+                {{-- {{ Form::textGroup('tax_number', trans('general.tax_number'), 'percent', []) }} --}}
 
                 {{ Form::selectAddNewGroup('currency_code', trans_choice('general.currencies', 1), 'exchange-alt', $currencies, $customer->currency_code, ['required' => 'required', 'path' => route('modals.currencies.create'), 'field' => ['key' => 'code', 'value' => 'name']]) }}
 

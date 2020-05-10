@@ -16,6 +16,7 @@ use App\Models\Purchase\Bill;
 use App\Models\Setting\Currency;
 use App\Traits\Contacts;
 use Date;
+use Illuminate\Support\Facades\Validator;
 
 class Vendors extends Controller
 {
@@ -115,6 +116,16 @@ class Vendors extends Controller
      */
     public function store(Request $request)
     {
+        $rules = [
+            'document' => 'required',
+        ];
+
+        $messages = [
+            'document.required' => 'O campo Documento é obrigatório!',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages)->validate();
+
         $response = $this->ajaxDispatch(new CreateContact($request));
 
         if ($response['success']) {
@@ -194,6 +205,16 @@ class Vendors extends Controller
      */
     public function update(Contact $vendor, Request $request)
     {
+        $rules = [
+            'document' => 'required',
+        ];
+
+        $messages = [
+            'document.required' => 'O campo Documento é obrigatório!',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages)->validate();
+        
         $response = $this->ajaxDispatch(new UpdateContact($vendor, $request));
 
         if ($response['success']) {

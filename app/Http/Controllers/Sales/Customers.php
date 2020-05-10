@@ -17,6 +17,7 @@ use App\Models\Setting\Currency;
 use App\Traits\Contacts;
 use Date;
 use Illuminate\Http\Request as BaseRequest;
+use Illuminate\Support\Facades\Validator;
 
 class Customers extends Controller
 {
@@ -116,6 +117,18 @@ class Customers extends Controller
      */
     public function store(Request $request)
     {
+        $rules = [
+            'company_name' => 'required',
+            'document' => 'required',
+        ];
+
+        $messages = [
+            'company_name.required' => 'O campo Razão Social é obrigatório!',
+            'document.required' => 'O campo Documento é obrigatório!',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages)->validate();
+
         $response = $this->ajaxDispatch(new CreateContact($request));
 
         if ($response['success']) {
@@ -195,6 +208,18 @@ class Customers extends Controller
      */
     public function update(Contact $customer, Request $request)
     {
+        $rules = [
+            'company_name' => 'required',
+            'document' => 'required',
+        ];
+
+        $messages = [
+            'company_name.required' => 'O campo Razão Social é obrigatório!',
+            'document.required' => 'O campo Documento é obrigatório!',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages)->validate();
+        
         $response = $this->ajaxDispatch(new UpdateContact($customer, $request));
 
         if ($response['success']) {
@@ -326,11 +351,11 @@ class Customers extends Controller
             foreach ($request['fields'] as $field) {
                 switch ($field) {
                     case 'password':
-                        $html .= \Form::passwordGroup('password', trans('auth.password.current'), 'key', [], 'col-md-6 password');
-                        break;
+                    $html .= \Form::passwordGroup('password', trans('auth.password.current'), 'key', [], 'col-md-6 password');
+                    break;
                     case 'password_confirmation':
-                        $html .= \Form::passwordGroup('password_confirmation', trans('auth.password.current_confirm'), 'key', [], 'col-md-6 password');
-                        break;
+                    $html .= \Form::passwordGroup('password_confirmation', trans('auth.password.current_confirm'), 'key', [], 'col-md-6 password');
+                    break;
                 }
             }
         }

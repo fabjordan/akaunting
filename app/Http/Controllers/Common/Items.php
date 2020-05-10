@@ -16,6 +16,7 @@ use App\Models\Setting\Category;
 use App\Models\Setting\Currency;
 use App\Models\Setting\Tax;
 use App\Traits\Uploads;
+use Illuminate\Support\Facades\Validator;
 
 class Items extends Controller
 {
@@ -67,6 +68,16 @@ class Items extends Controller
      */
     public function store(Request $request)
     {
+        $rules = [
+            'quantity' => 'required',
+        ];
+
+        $messages = [
+            'quantity.required' => 'O campo Quantidade é obrigatório!',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages)->validate();
+
         $response = $this->ajaxDispatch(new CreateItem($request));
 
         if ($response['success']) {
@@ -147,6 +158,16 @@ class Items extends Controller
      */
     public function update(Item $item, Request $request)
     {
+        $rules = [
+            'quantity' => 'required',
+        ];
+
+        $messages = [
+            'quantity.required' => 'O campo Quantidade é obrigatório!',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages)->validate();
+
         $response = $this->ajaxDispatch(new UpdateItem($item, $request));
 
         if ($response['success']) {

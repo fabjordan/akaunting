@@ -1,8 +1,9 @@
 FROM php:apache
 
-RUN apt-get update && apt-get install -y zip libzip-dev libpng-dev \
+RUN apt-get update && apt-get install -y zip libfreetype6-dev libjpeg62-turbo-dev libzip-dev libpng-dev \
+	&& docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql gd zip bcmath \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lbi/apt/lists/*
 
 # Composer installation.
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

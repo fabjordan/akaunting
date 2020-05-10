@@ -3,56 +3,70 @@
 @section('title', trans('general.title.edit', ['type' => trans_choice('general.vendors', 1)]))
 
 @section('content')
-    <div class="card">
-        {!! Form::model($vendor, [
-            'id' => 'vendor',
-            'method' => 'PATCH',
-            'route' => ['vendors.update', $vendor->id],
-            '@submit.prevent' => 'onSubmit',
-            '@keydown' => 'form.errors.clear($event.target.name)',
-            'files' => true,
-            'role' => 'form',
-            'class' => 'form-loading-button',
-            'novalidate' => true
-        ]) !!}
+<div class="card">
+    {!! Form::model($vendor, [
+        'id' => 'vendor',
+        'method' => 'PATCH',
+        'route' => ['vendors.update', $vendor->id],
+        '@submit.prevent' => 'onSubmit',
+        '@keydown' => 'form.errors.clear($event.target.name)',
+        'files' => true,
+        'role' => 'form',
+        'class' => 'form-loading-button',
+        'novalidate' => true
+    ]) 
+    !!}
 
-            <div class="card-body">
-                <div class="row">
-                    {{ Form::textGroup('name', trans('general.name'), 'user') }}
+    <div class="card-body">
+        <div class="row">
+            {{ Form::textGroup('name', trans('general.name'), 'user') }}
 
-                    {{ Form::textGroup('email', trans('general.email'), 'envelope', []) }}
+            {{ Form::textGroup('email', trans('general.email'), 'envelope', []) }}
 
-                    {{ Form::textGroup('tax_number', trans('general.tax_number'), 'percent', []) }}
+            {{ Form::textGroup('document', trans('general.document'), 'percent', ['id' => 'document', 'required' => 'required']) }}
 
-                    {{ Form::selectAddNewGroup('currency_code', trans_choice('general.currencies', 1), 'exchange-alt', $currencies, $vendor->currency_code, ['required' => 'required', 'path' => route('modals.currencies.create'), 'field' => ['key' => 'code', 'value' => 'name']]) }}
+            {{ Form::hidden('currency_code', 'BRL') }}
 
-                    {{ Form::textGroup('phone', trans('general.phone'), 'phone', []) }}
+            {{-- {{ Form::selectAddNewGroup('currency_code', trans_choice('general.currencies', 1), 'exchange-alt', $currencies, setting('default.currency'), ['required' => 'required', 'path' => route('modals.currencies.create'), 'field' => ['key' => 'code', 'value' => 'name']]) }} --}}
 
-                    {{ Form::textGroup('website', trans('general.website'), 'globe',[]) }}
+            {{ Form::textGroup('phone', trans('general.phone'), 'phone', ['id' => 'phone_with_ddd']) }}
 
-                    {{ Form::textareaGroup('address', trans('general.address')) }}
+            {{ Form::textGroup('website', trans('general.website'), 'globe', []) }}
 
-                    {{ Form::fileGroup('logo', trans_choice('general.logos', 1)) }}
+            {{ Form::fileGroup('logo', trans_choice('general.pictures', 1)) }}
 
-                    {{ Form::textGroup('reference', trans('general.reference'), 'file', []) }}
+            {{ Form::textareaGroup('address', trans('general.address')) }}
 
-                    {{ Form::radioGroup('enabled', trans('general.enabled'), $vendor->enabled) }}
-                </div>
-            </div>
+            {{ Form::textGroup('reference', trans('general.reference'), 'file', []) }}
 
-            @permission('update-purchases-vendors')
-                <div class="card-footer">
-                    <div class="row save-buttons">
-                        {{ Form::saveButtons('vendors.index') }}
-                    </div>
-                </div>
-            @endpermission
-
-            {{ Form::hidden('type', 'vendor') }}
-        {!! Form::close() !!}
+            {{ Form::radioGroup('enabled', trans('general.enabled'), true) }}
+        </div>
     </div>
+
+    @permission('update-purchases-vendors')
+    <div class="card-footer">
+        <div class="row save-buttons">
+            {{ Form::saveButtons('vendors.index') }}
+        </div>
+    </div>
+    @endpermission
+
+    {{ Form::hidden('type', 'vendor') }}
+    {!! Form::close() !!}
+</div>
 @endsection
 
 @push('scripts_start')
-    <script src="{{ asset('public/js/purchases/vendors.js?v=' . version('short')) }}"></script>
+<script src="{{ asset('public/js/purchases/vendors.js?v=' . version('short')) }}"></script>
+@endpush
+
+@push('body_scripts')
+<script>
+    $(document).ready(function(){
+
+        $('#document').mask('00.000.000/0000-00', {reverse: true});
+
+        $('#phone_with_ddd').mask('(00) 90000-0000');
+    });
+</script>
 @endpush
