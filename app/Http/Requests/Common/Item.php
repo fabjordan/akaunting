@@ -37,6 +37,23 @@ class Item extends FormRequest
             'category_id' => 'nullable|integer',
             'enabled' => 'integer|boolean',
             'picture' => $picture,
+            'quantity' => 'required'
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'name.required' => 'O Nome é obrigatório.',
+            'name.string' => 'O Nome deve conter o formato de texto.',
+            'sale_price.required' => 'O Preço de Venda é obrigatório.',
+            'purchase_price.required' => 'O Preço de Compra é obrigatório.',
+            'quantity.required' => 'A Quantidade é obrigatória.',
         ];
     }
 }

@@ -35,11 +35,13 @@ abstract class Export implements FromCollection, ShouldAutoSize, WithHeadings, W
 
         $date_fields = ['paid_at', 'invoiced_at', 'billed_at', 'due_at', 'issued_at', 'created_at'];
 
-        foreach ($this->fields() as $field) {
+        $fields = ['name', 'sale_price', 'purchase_price', 'quantity', 'category_name', 'description', 'enabled'];
+
+        foreach ($fields as $field) {
             $value = $model->$field;
 
             if (in_array($field, $date_fields)) {
-                $value = Date::parse($value)->format('Y-m-d');
+                $value = Date::parse($value)->format('d/m/Y');
             }
 
             $map[] = $value;
@@ -50,6 +52,16 @@ abstract class Export implements FromCollection, ShouldAutoSize, WithHeadings, W
 
     public function headings(): array
     {
-        return $this->fields();
+        return [
+            'Nome',
+            'Preço de Venda',
+            'Preço de Compra',
+            'Quantidade',
+            'Categoria',
+            'Descrição',
+            'Ativado',
+        ];
+
+        // return $this->fields();
     }
 }

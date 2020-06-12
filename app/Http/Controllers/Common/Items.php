@@ -16,6 +16,7 @@ use App\Models\Setting\Category;
 use App\Models\Setting\Currency;
 use App\Models\Setting\Tax;
 use App\Traits\Uploads;
+use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Validator;
 
 class Items extends Controller
@@ -32,6 +33,14 @@ class Items extends Controller
         $items = Item::with(['category', 'tax'])->collect();
 
         return view('common.items.index', compact('items'));
+    }
+
+    public function search(HttpRequest $request)
+    {
+        $items = Item::where('name', 'like', '%' . $request['query'] . '%')
+            ->get();
+
+        return response()->json($items);
     }
 
     /**
@@ -68,16 +77,6 @@ class Items extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
-            'quantity' => 'required',
-        ];
-
-        $messages = [
-            'quantity.required' => 'O campo Quantidade é obrigatório!',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages)->validate();
-
         $response = $this->ajaxDispatch(new CreateItem($request));
 
         if ($response['success']) {
@@ -327,8 +326,8 @@ class Items extends Controller
 
         if ($input_items) {
             foreach ($input_items as $key => $item) {
-                $price = (double) $item['price'];
-                $quantity = (double) $item['quantity'];
+                $price = (float) $item['price'];
+                $quantity = (float) $item['quantity'];
 
                 $item_tax_total = 0;
                 $item_tax_amount = 0;

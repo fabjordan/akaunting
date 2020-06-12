@@ -219,7 +219,7 @@ class Customers extends Controller
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages)->validate();
-        
+
         $response = $this->ajaxDispatch(new UpdateContact($customer, $request));
 
         if ($response['success']) {

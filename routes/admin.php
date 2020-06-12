@@ -37,6 +37,7 @@ Route::group(['prefix' => 'common'], function () {
     Route::get('items/{item}/enable', 'Common\Items@enable')->name('items.enable');
     Route::get('items/{item}/disable', 'Common\Items@disable')->name('items.disable');
     Route::resource('items', 'Common\Items', ['middleware' => ['money']]);
+    Route::get('search-item/search', 'Common\Items@search')->name('items.search');
 
     Route::resource('search', 'Common\Search');
 
